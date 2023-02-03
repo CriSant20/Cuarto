@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Basic Form - jQuery EasyUI Demo</title>
+    <link rel="stylesheet" type="text/css" href="jquery/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="jquery/themes/icon.css">
+    <script type="text/javascript" src="jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="jquery/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="jquery/locale/easyui-lang-es.js"></script>
+
+</head>
+
+<body>
+    <h2>Estudiantes</h2>
+    <p>UTA</p>
+    <div style="margin:20px 0;"></div>
+    <div class="easyui-panel" title="Registro de estudiantes" style="width:100%;max-width:400px;padding:30px 60px;">
+        <form id="ff" method="post">
+            <div style="margin-bottom:20px">
+                <input class="easyui-textbox" name="Nombre" style="width:100%"
+                    data-options="label:'Nombre',required:true">
+            </div>
+            <div style="margin-bottom:20px">
+                <input class="easyui-textbox" name="Correo" style="width:100%"
+                    data-options="label:'E-mail',required:true,validType:'email'">
+            </div>
+            <div style="margin-bottom:20px">
+                <input class="easyui-textbox" name="Tema" style="width:100%"
+                    data-options="label:'Subject:',required:true">
+            </div>
+            <div style="margin-bottom:20px">
+                <input class="easyui-textbox" name="Mensaje" style="width:100%;height:60px"
+                    data-options="label:'Message:',multiline:true">
+            </div>
+            <div style="margin-bottom:20px">
+                <select class="easyui-combobox" name="language" label="Language" style="width:100%">
+                    <option value="ar">Arabic</option>
+                    <option value="bg">Bulgarian</option>
+                    <option value="ca">Catalan</option>
+                    <option value="zh-cht">Chinese Traditional</option>
+                    <option value="cs">Czech</option>
+                    <option value="da">Danish</option>
+                    <option value="nl">Dutch</option>
+                    <option value="en" selected="selected">English</option>
+                    <option value="et">Estonian</option>
+                    <option value="fi">Finnish</option>
+                    <option value="fr">French</option>
+                    <option value="de">German</option>
+                    <option value="el">Greek</option>
+                    <option value="ht">Haitian Creole</option>
+                    <option value="he">Hebrew</option>
+                    <option value="hi">Hindi</option>
+                    <option value="mww">Hmong Daw</option>
+                    <option value="hu">Hungarian</option>
+                    <option value="id">Indonesian</option>
+                    <option value="it">Italian</option>
+                    <option value="ja">Japanese</option>
+                    <option value="ko">Korean</option>
+                    <option value="lv">Latvian</option>
+                    <option value="lt">Lithuanian</option>
+                    <option value="no">Norwegian</option>
+                    <option value="fa">Persian</option>
+                    <option value="pl">Polish</option>
+                    <option value="pt">Portuguese</option>
+                    <option value="ro">Romanian</option>
+                    <option value="ru">Russian</option>
+                    <option value="sk">Slovak</option>
+                    <option value="sl">Slovenian</option>
+                    <option value="es">Spanish</option>
+                    <option value="sv">Swedish</option>
+                    <option value="th">Thai</option>
+                    <option value="tr">Turkish</option>
+                    <option value="uk">Ukrainian</option>
+                    <option value="vi">Vietnamese</option>
+                </select>
+            </div>
+        </form>
+        <div style="text-align:center;padding:5px 0">
+            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" style="width:80px">Enviar</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" style="width:80px">Limpiar</a>
+        </div>
+    </div>
+    <script>
+        function submitForm() {
+            $('#ff').form('submit');
+        }
+        function clearForm() {
+            $('#ff').form('clear');
+        }
+    </script>
+    <h2>Basic CRUD Application</h2>
+    <p>Click the buttons on datagrid toolbar to do crud actions.</p>
+
+    <table id="dg" title="My Users" class="easyui-datagrid" style="width:700px;height:250px" url="get_users.php"
+        toolbar="#toolbar" pagination="true" rownumbers="true" fitColumns="true" singleSelect="true">
+        <thead>
+            <tr>
+                <th field="firstname" width="50">First Name</th>
+                <th field="lastname" width="50">Last Name</th>
+                <th field="phone" width="50">Phone</th>
+                <th field="email" width="50">Email</th>
+            </tr>
+        </thead>
+    </table>
+    <div id="toolbar">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newUser()">New
+            User</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true"
+            onclick="editUser()">Edit User</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true"
+            onclick="destroyUser()">Remove User</a>
+    </div>
+
+    <div id="dlg" class="easyui-dialog" style="width:400px"
+        data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'">
+        <form id="fm" method="post" novalidate style="margin:0;padding:20px 50px">
+            <h3>User Information</h3>
+            <div style="margin-bottom:10px">
+                <input name="firstname" class="easyui-textbox" required="true" label="First Name:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="lastname" class="easyui-textbox" required="true" label="Last Name:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="phone" class="easyui-textbox" required="true" label="Phone:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="email" class="easyui-textbox" required="true" validType="email" label="Email:"
+                    style="width:100%">
+            </div>
+        </form>
+    </div>
+    <div id="dlg-buttons">
+        <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveUser()"
+            style="width:90px">Save</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+            onclick="javascript:$('#dlg').dialog('close')" style="width:90px">Cancel</a>
+    </div>
+    <script type="text/javascript">
+        var url;
+        function newUser() {
+            $('#dlg').dialog('open').dialog('center').dialog('setTitle', 'New User');
+            $('#fm').form('clear');
+            url = 'save_user.php';
+        }
+        function editUser() {
+            var row = $('#dg').datagrid('getSelected');
+            if (row) {
+                $('#dlg').dialog('open').dialog('center').dialog('setTitle', 'Edit User');
+                $('#fm').form('load', row);
+                url = 'update_user.php?id=' + row.id;
+            }
+        }
+        function saveUser() {
+            $('#fm').form('submit', {
+                url: url,
+                iframe: false,
+                onSubmit: function () {
+                    return $(this).form('validate');
+                },
+                success: function (result) {
+                    var result = eval('(' + result + ')');
+                    if (result.errorMsg) {
+                        $.messager.show({
+                            title: 'Error',
+                            msg: result.errorMsg
+                        });
+                    } else {
+                        $('#dlg').dialog('close');        // close the dialog
+                        $('#dg').datagrid('reload');    // reload the user data
+                    }
+                }
+            });
+        }
+        function destroyUser() {
+            var row = $('#dg').datagrid('getSelected');
+            if (row) {
+                $.messager.confirm('Confirm', 'Are you sure you want to destroy this user?', function (r) {
+                    if (r) {
+                        $.post('destroy_user.php', { id: row.id }, function (result) {
+                            if (result.success) {
+                                $('#dg').datagrid('reload');    // reload the user data
+                            } else {
+                                $.messager.show({    // show error message
+                                    title: 'Error',
+                                    msg: result.errorMsg
+                                });
+                            }
+                        }, 'json');
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+
+</html>

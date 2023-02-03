@@ -1,0 +1,146 @@
+<html>
+
+<head>
+    <script type="text/javascript" src="js/operaciones.js"></script>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="jquery/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="jquery/themes/icon.css">
+    <script type="text/javascript" src="jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="jquery/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="jquery/locale/easyui-lang-es.js"></script>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+
+<body style="background-color:#CFD8DC;">
+
+    <header>
+        <img src="imagenes/logouta.jpg" width="100%" height="27%">
+    </header>
+    <nav class="menu">
+        <ul>
+            <li>Inicio</li>
+            <li>Servicios</li>
+            <li>Contactos</li>
+            <li><a href="https://www.google.com/" Informacion>Informacion</a></li>
+        </ul>
+    </nav>
+    <article>
+        <h2>CRUD ESTUDIANTES</h2>
+        <p>UNIVERSIDAD TECNICA DE AMBATO</p>
+
+        <table id="dg" title="Estudiantes" class="easyui-datagrid" style="width:1000px;height:450px"
+            url="models/select.php" toolbar="#toolbar" pagination="true" rownumbers="true" fitColumns="true"
+            singleSelect="true">
+            <thead>
+                <tr>
+                    <th field="EST_CEDULA" width="50">Cedula</th>
+                    <th field="EST_NOMBRE" width="50">Nombre</th>
+                    <th field="EST_APELLIDO" width="50">Apellido</th>
+                    <th field="EST_DIRECCION" width="50">Direccion</th>
+                    <th field="EST_TELEFONO" width="50">Telefono</th>
+                </tr>
+            </thead>
+        </table>
+        <div id="toolbar">
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true"
+                onclick="newUser()">Nuevo Estudiantes User</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true"
+                onclick="editUser()">Editar Estudiante</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true"
+                onclick="destroyUser()">Eliminar Estudiante</a>
+            <a href="phpjasperxml/examples/databasesample.php" class="easyui-linkbutton" iconCls="icon-print"
+                plain="true">Abrir Reporte</a>
+        </div>
+
+        <div id="dlg" class="easyui-dialog" style="width:800px"
+            data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'">
+            <form id="fm" method="post" novalidate style="margin:0;padding:20px 50px">
+                <h3>Informacion Estudiantes</h3>
+                <div style="margin-bottom:10px">
+                    <input name="EST_CEDULA" class="easyui-textbox" required="true" label="Cedula:" style="width:100%">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="EST_NOMBRE" class="easyui-textbox" required="true" label="Nombre:" style="width:100%">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="EST_APELLIDO" class="easyui-textbox" required="true" label="Apellido:"
+                        style="width:100%">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="EST_DIRECCION" class="easyui-textbox" required="true" label="Direccion:"
+                        style="width:100%">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="EST_TELEFONO" class="easyui-textbox" required="true" label="Telefono:"
+                        style="width:100%">
+                </div>
+        </div>
+        </form>
+        </div>
+        <div id="dlg-buttons">
+            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveUser()"
+                style="width:90px">Guardar</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+                onclick="javascript:$('#dlg').dialog('close')" style="width:90px">Cancelar</a>
+        </div>
+        <script type="text/javascript">
+            var url;
+            function newUser() {
+                $('#dlg').dialog('open').dialog('center').dialog('setTitle', 'Nuevo Estudiante');
+                $('#fm').form('clear');
+                url = 'models/insertar.php';
+            }
+            function editUser() {
+                var row = $('#dg').datagrid('getSelected');
+                if (row) {
+                    $('#dlg').dialog('open').dialog('center').dialog('setTitle', 'Editar Estudiante');
+                    $('#fm').form('load', row);
+                    url = 'models/actualizar.php?id=' + row.id;
+                }
+            }
+            function saveUser() {
+                $('#fm').form('submit', {
+                    url: url,
+                    iframe: false,
+                    onSubmit: function () {
+                        return $(this).form('validate');
+                    },
+                    success: function (result) {
+                        var result = eval('(' + result + ')');
+                        if (result.errorMsg) {
+                            $.messager.show({
+                                title: 'Error',
+                                msg: result.errorMsg
+                            });
+                        } else {
+                            $('#dlg').dialog('close');        // close the dialog
+                            $('#dg').datagrid('reload');    // reload the user data
+                        }
+                    }
+                });
+            }
+            function destroyUser() {
+                var row = $('#dg').datagrid('getSelected');
+                if (row) {
+                    $.messager.confirm('Confirm', 'Estas seguro de eliminar este registro?', function (r) {
+                        if (r) {
+                            $.post('models/eliminar.php', { EST_CEDULA: row.EST_CEDULA }, function (result) {
+                                if (result.succes) {
+                                    $('#dg').datagrid('reload');    // reload the user data
+                                } else {
+                                    $('#dg').datagrid('reload');    // reload the user data
+
+                                }
+                            }, 'json');
+                        }
+                    });
+                }
+            }
+        </script>
+    </article>
+    <footer>
+        Derechos reservados @CuartoSoftware
+    </footer>
+</body>
+
+</html>
